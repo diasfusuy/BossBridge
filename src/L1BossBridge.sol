@@ -27,11 +27,11 @@ import { L1Vault } from "./L1Vault.sol";
 contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    uint256 public DEPOSIT_LIMIT = 100_000 ether;
+    uint256 public DEPOSIT_LIMIT = 100_000 ether; // e depositing tokens, cant do too many
 
-    IERC20 public immutable token;
-    L1Vault public immutable vault;
-    mapping(address account => bool isSigner) public signers;
+    IERC20 public immutable token; // e one bridge er token
+    L1Vault public immutable vault; // e one vault per token
+    mapping(address account => bool isSigner) public signers; 
 
     error L1BossBridge__DepositLimitReached();
     error L1BossBridge__Unauthorized();
@@ -54,6 +54,7 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
         _unpause();
     }
 
+    // q what happens if we disable it mid flight? 
     function setSigner(address account, bool enabled) external onlyOwner {
         signers[account] = enabled;
     }
@@ -88,6 +89,11 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
      * @param r The r value of the signature
      * @param s The s value of the signature
      */
+
+    // Alice: approve token -> bridge
+    // Bob: depositTokensToL2(from: Alice, l2Reciepient: Bob, amount)
+    // @audit - high 
+    // if user approves bridge any other user can steal funds
     function withdrawTokensToL1(address to, uint256 amount, uint8 v, bytes32 r, bytes32 s) external {
         sendToL1(
             v,
