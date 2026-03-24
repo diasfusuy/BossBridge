@@ -27,6 +27,7 @@ import { L1Vault } from "./L1Vault.sol";
 contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
+    // @audit - info should be constant 
     uint256 public DEPOSIT_LIMIT = 100_000 ether; // e depositing tokens, cant do too many
 
     IERC20 public immutable token; // e one bridge er token
@@ -75,6 +76,7 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
         token.safeTransferFrom(from, address(vault), amount);
 
         // Our off-chain service picks up this event and mints the corresponding tokens on L2
+        // @audit - info should follow CEI
         emit Deposit(from, l2Recipient, amount);
     }
 
@@ -124,6 +126,7 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
 
         (address target, uint256 value, bytes memory data) = abi.decode(message, (address, uint256, bytes));
 
+        // Slither said its bad
         (bool success,) = target.call{ value: value }(data);
         if (!success) {
             revert L1BossBridge__CallFailed();
