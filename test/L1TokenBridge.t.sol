@@ -241,4 +241,16 @@ contract L1BossBridgeTest is Test {
         assertEq(token.balanceOf(address(vault)), depositAmount);
         vm.stopPrank();
     }
+
+    function testCanTransferFromVaultToVault() public {
+        address attacker = makeAddr("attacker");
+
+        uint256 vaultBalance = 500 ether;
+        deal(address(token), address(vault), vaultBalance);
+
+        // Can trigger the deposit event, self transfer tokens to the vault
+        vm.expectEmit(address(tokenBridge));
+        emit Deposit(address(vault), attacker, vaultBalance);
+        tokenBridge.depositTokensToL2(address(vault), attacker, vaultBalance);
+    }
 }
