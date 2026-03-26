@@ -129,7 +129,9 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
 
         (address target, uint256 value, bytes memory data) = abi.decode(message, (address, uint256, bytes));
 
-        // Slither said its bad
+        // @audit 
+        // data with a lot gas cost
+        // attacker will not get a benefit, but signers will be devestaded
         (bool success,) = target.call{ value: value }(data);
         if (!success) {
             revert L1BossBridge__CallFailed();
