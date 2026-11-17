@@ -1,3 +1,20 @@
+# Boss Bridge Security Review
+
+**Security review by Yusuf Sahin** · March 2026
+
+- 📄 Full report: [audit-data/report.pdf](audit-data/report.pdf) ([Markdown](audit-data/2026-03-29-boss-bridge-audit.md))
+- 🔎 8 findings: **4 High, 4 Informational**
+- 🧪 Proof-of-concept tests in `test/L1TokenBridge.t.sol`: `testCanMoveApprovedTokensOfOtherUsers` (H-1), `testSignatureReplay` (H-2), `testCanTransferFromVaultToVault` (H-3)
+
+This is a practice audit of Boss Bridge, an intentionally vulnerable training codebase from the [Cyfrin Updraft](https://updraft.cyfrin.io) smart contract security course. The original protocol README follows below.
+
+```bash
+forge test
+forge test --match-test testSignatureReplay -vv
+```
+
+---
+
 <p align="center">
 <img src="./images/boss-bridge.png" width="400" alt="puppy-raffle">
 <br/>
