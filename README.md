@@ -6,7 +6,7 @@
 - 🔎 8 findings: **4 High, 4 Informational**
 - 🧪 Proof-of-concept tests in `test/L1TokenBridge.t.sol`: `testCanMoveApprovedTokensOfOtherUsers` (H-1), `testSignatureReplay` (H-2), `testCanTransferFromVaultToVault` (H-3)
 
-This is a practice audit of Boss Bridge, an intentionally vulnerable training codebase from the [Cyfrin Updraft](https://updraft.cyfrin.io) smart contract security course. The original protocol README follows below.
+Codebase: Boss Bridge, from [Cyfrin](https://www.cyfrin.io)'s open-source smart contract security curriculum. The original protocol README follows below.
 
 ```bash
 forge test
